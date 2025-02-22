@@ -30,21 +30,26 @@
             </div>
 
             <hr>
+            <textarea id="chara-list"></textarea>
+            <input type="button" onclick="clearSelection()" value="Clear Selection">
 
             <div id="unitSelect">
-                <!-- <textarea id="chara-list">{"abigail":{"name":"Abigail","count":1},"abyssal_yufine":{"name":"Abyssal Yufine","count":1},"achates":{"name":"Achates","count":1},"adin":{"name":"Adin","count":1},"adlay":{"name":"Adlay","count":1},"adventurer_ras":{"name":"Adventurer Ras","count":1},"ae_giselle":{"name":"ae-GISELLE","count":1},"ae_karina":{"name":"ae-KARINA","count":1}}</textarea> -->
-                <textarea id="chara-list"></textarea>
                 <input type="button" onclick="updateList('unitList', heroData.heroes, document.getElementById('chara-list').value)" value="Manual update">
                 <div class="heroBlockList unitList" id="unitList"></div>
                 </div>
-                <!-- <select name="units" id="units"></select> -->
             </div>
-            <div id="unitUpdate" class="hidden"></div>
+            <div id="unitUpdate" class="hidden">
+            </div>
         </div>
 
     </body>
     <script>
         let heroData = {};
+        function clearSelection() {
+            document.getElementById("chara-list").value = "{}";
+            localStorage.setItem('ultimate-bravery-list', "{}");
+            updateList("unitList", heroData.heroes, document.getElementById("chara-list").value);
+        }
         function clickHandler() {
             let list = document.getElementById("chara-list").value;
             if(list == null || list == "") {
@@ -57,6 +62,7 @@
             };
             this.classList.add("hidden");
             document.getElementById("chara-list").value = JSON.stringify(list);
+            localStorage.setItem('ultimate-bravery-list', document.getElementById("chara-list").value);
         }
         function generateTeam() {
             const teamData = {};
@@ -102,15 +108,15 @@
         function loadContent() {
             loadHTML("navbar", "/components/html/navbar")
             loadHTML("e7head", "/components/html/e7head")
+            if(localStorage.getItem('ultimate-bravery-list') === null) {
+                localStorage.setItem('ultimate-bravery-list', '{}');
+            }
             
             // getJSON("https://e7calc.xyz/assets/i18n/us.json").then(data => {
             getJSON("../data/heroes.json").then(data => {
                 heroData = data;
-                if(document.getElementById("chara-list").value == "") {
-                    document.getElementById("chara-list").value = "{}";
-                }
-                let list = document.getElementById("chara-list").value;
-                updateList("unitList", data.heroes, list);
+                document.getElementById("chara-list").value = localStorage.getItem('ultimate-bravery-list');
+                updateList("unitList", data.heroes, document.getElementById("chara-list").value);
                 return;
             }).catch(error => {
                 console.log(error);
