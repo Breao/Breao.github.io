@@ -1,3 +1,8 @@
+.center {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+}
 
 .heroBlockList {
     display: flex;
@@ -5,10 +10,27 @@
     justify-content: center;
 }
 .heroBlock {
-    /* background-color: #f1f1f1; */
-    width: 300px;
+    /* width: 300px; */
     margin: 10px;
     text-align: center;
-    line-height: 75px;
+    /* line-height: 75px; */
     font-size: 30px;
+}
+
+.heroBlock:hover {
+    background-color: #f1f1f1;
+}
+
+.heroBlock > .hero-name {
+    font-size: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+.png-icon.medium {
+    /* max-width: 60%; */
+    max-width: 80px;
+    height: auto;
 }

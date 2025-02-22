@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" type="text/css" href="/components/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+        <!-- <script src="/components/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script> -->
+        <script src="/components/js/main.js"></script>
+        <link rel="stylesheet" href="/components/styles/main.css">
+        <link rel="stylesheet" href="../styles/main.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+    </head>
+    <body onload="loadContent()">
+        <nav id="navbar"></nav>
+        <nav id="e7head"></nav>
+        <div id="content">
+            <div>
+                <input class="center" type="button" onclick="generateTeam()" value="Generate Team">
+                <div class="heroBlockList unitList" id="draftList"></div>
+            </div>
+            <hr>
+            <div>
+                <input type="button" value="Select Units" onclick="showSelect()">
+                <input type="button" value="Update Unit List" onclick="showUpdate()">
+            </div>
+
+            <div id="unitSelect">
+                <textarea id="chara-list">{"abigail":{"name":"Abigail","count":1},"abyssal_yufine":{"name":"Abyssal Yufine","count":1},"achates":{"name":"Achates","count":1},"adin":{"name":"Adin","count":1},"adlay":{"name":"Adlay","count":1},"adventurer_ras":{"name":"Adventurer Ras","count":1},"ae_giselle":{"name":"ae-GISELLE","count":1},"ae_karina":{"name":"ae-KARINA","count":1}}</textarea>
+                <!-- <textarea id="chara-list"></textarea> -->
+                <input type="button" onclick="updateList('unitList', heroData.heroes, document.getElementById('chara-list').value)" value="Manual update">
+    
+                <div class="heroBlockList unitList" id="unitList"></div>
+                </div>
+                <!-- <select name="units" id="units"></select> -->
+            </div>
+            <div id="unitUpdate" class="hidden"></div>
+        </div>
+
+    </body>
+    <script>
+        let heroData = {};
+        function clickHandler() {
+            let list = document.getElementById("chara-list").value;
+            if(list == null || list == "") {
+                list = "{}";
+            }
+            list = JSON.parse(list);
+            list[this.getAttribute("nameId")] = {
+                "name": this.getAttribute("name"),
+                "count": 1,
+            };
+            this.classList.add("hidden");
+            document.getElementById("chara-list").value = JSON.stringify(list);
+        }
+        function generateTeam() {
+            const teamData = {};
+            let list = JSON.parse(document.getElementById("chara-list").value);
+            let keys = Object.keys(list);
+            if(Object.keys(list).length < 4) {
+                return alert("Not enough units selected");
+            }
+            for(let i = 0; i < 4; i++) {
+                const index = Math.floor(Math.random() * Object.keys(list).length);
+                teamData[keys[index]] = list[keys[index]]["name"];
+                delete list[keys[index]]; 
+                keys = Object.keys(list);
+            }
+            updateList("draftList", teamData, "{}", 1);
+        }
+        function updateList(location, data, list = null, names = null) {
+            if(list == null || list == "") {
+                list = "{}";
+            }
+            list = JSON.parse(list);
+            document.getElementById(location).innerHTML = "";
+            for (let key in data) {
+                if(data[key] !== "Pre-Balance" && !(key in list)) {
+                    const elemDiv = document.createElement('div');
+                    elemDiv.setAttribute('nameId', key);
+                    elemDiv.setAttribute('name', data[key]);
+                    elemDiv.classList.add("unit");
+                    elemDiv.classList.add("heroBlock");
+                    elemDiv.classList.add("hero-image");
+                    elemDiv.addEventListener("click", clickHandler, false);
+
+                    elemDiv.innerHTML = "<img class='png-icon medium' src='" +
+                    "https://e7calc.xyz/assets/heroes/"+key+"-icon.png" +
+                    "'>";
+                    if(names !== null) {
+                        elemDiv.innerHTML += "<div class='hero-name'>" + data[key] + "</div>";
+                    }
+                    document.getElementById(location).appendChild(elemDiv);
+                }
+            }
+        }
+        function loadContent() {
+            loadHTML("navbar", "/components/html/navbar")
+            loadHTML("e7head", "/components/html/e7head")
+            
+            // getJSON("https://e7calc.xyz/assets/i18n/us.json").then(data => {
+            getJSON("../data/heroes.json").then(data => {
+                heroData = data;
+                if(document.getElementById("chara-list").value == "") {
+                    document.getElementById("chara-list").value = "{}";
+                }
+                let list = document.getElementById("chara-list").value;
+                updateList("unitList", data.heroes, list);
+                return;
+            }).catch(error => {
+                console.log(error);
+                alert("Not able to get unit data");
+            });
+        }
+        function showSelect() {
+            document.getElementById("unitUpdate").classList.add("hidden");
+            document.getElementById("unitSelect").classList.remove("hidden");
+        }
+        function showUpdate() {
+            document.getElementById("unitUpdate").classList.remove("hidden");
+            document.getElementById("unitSelect").classList.add("hidden");
+            
+        }
+    </script>
+</html>
