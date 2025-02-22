@@ -29,11 +29,12 @@
                 <input type="button" value="Update Unit List" onclick="showUpdate()">
             </div>
 
+            <hr>
+
             <div id="unitSelect">
-                <textarea id="chara-list">{"abigail":{"name":"Abigail","count":1},"abyssal_yufine":{"name":"Abyssal Yufine","count":1},"achates":{"name":"Achates","count":1},"adin":{"name":"Adin","count":1},"adlay":{"name":"Adlay","count":1},"adventurer_ras":{"name":"Adventurer Ras","count":1},"ae_giselle":{"name":"ae-GISELLE","count":1},"ae_karina":{"name":"ae-KARINA","count":1}}</textarea>
-                <!-- <textarea id="chara-list"></textarea> -->
+                <!-- <textarea id="chara-list">{"abigail":{"name":"Abigail","count":1},"abyssal_yufine":{"name":"Abyssal Yufine","count":1},"achates":{"name":"Achates","count":1},"adin":{"name":"Adin","count":1},"adlay":{"name":"Adlay","count":1},"adventurer_ras":{"name":"Adventurer Ras","count":1},"ae_giselle":{"name":"ae-GISELLE","count":1},"ae_karina":{"name":"ae-KARINA","count":1}}</textarea> -->
+                <textarea id="chara-list"></textarea>
                 <input type="button" onclick="updateList('unitList', heroData.heroes, document.getElementById('chara-list').value)" value="Manual update">
-    
                 <div class="heroBlockList unitList" id="unitList"></div>
                 </div>
                 <!-- <select name="units" id="units"></select> -->
@@ -116,6 +117,7 @@
                 alert("Not able to get unit data");
             });
         }
+        
         function showSelect() {
             document.getElementById("unitUpdate").classList.add("hidden");
             document.getElementById("unitSelect").classList.remove("hidden");
