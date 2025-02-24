@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" type="text/css" href="/components/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/components/bootstrap-teamSize.3.1-dist/css/bootstrap.min.css">
         <!-- <script src="/components/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script> -->
         <script src="/components/js/main.js"></script>
         <link rel="stylesheet" href="/components/styles/main.css">
@@ -20,6 +20,8 @@
         <nav id="e7head"></nav>
         <div id="content">
             <div>
+                <p class="center">Team Size</p>
+                <input class="center" type="number" value="4" id="teamCount">
                 <input class="center" type="button" onclick="generateTeam()" value="Generate Team">
                 <div class="heroBlockList unitList" id="draftList"></div>
             </div>
@@ -72,6 +74,7 @@
             let list = [];
             let dupeOffset = 0;
             let baseList = JSON.parse(document.getElementById("chara-list").value);
+            let teamSize = document.getElementById("teamCount").value;
             baseList.forEach(unit => {
                 let counter = "";
                 if(unit.count > 1) {
@@ -89,10 +92,10 @@
                     });
                 }
             });
-            if((list.length - dupeOffset) < 4) {
+            if((list.length - dupeOffset) < teamSize) {
                 return alert("Not enough units selected");
             }
-            for(let i = 0; i < 4; i++) {
+            for(let i = 0; i < teamSize; i++) {
                 const index = Math.floor(Math.random() * list.length);
                 teamData.push(list[index]);
                 list = list.reduce((acc, item) => {
