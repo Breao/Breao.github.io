@@ -34,7 +34,7 @@
             <input type="button" onclick="clearSelection()" value="Clear Selection">
 
             <div id="unitSelect">
-                <input type="button" onclick="updateList('unitList', heroData.heroes, document.getElementById('chara-list').value)" value="Manual update">
+                <input type="button" onclick="updateList('unitList', heroData, document.getElementById('chara-list').value)" value="Manual update">
                 <div class="heroBlockList unitList" id="unitList"></div>
                 </div>
             </div>
@@ -44,54 +44,72 @@
 
     </body>
     <script>
-        let heroData = {};
+        let heroData = [];
         function clearSelection() {
-            document.getElementById("chara-list").value = "{}";
-            localStorage.setItem('ultimate-bravery-list', "{}");
-            updateList("unitList", heroData.heroes, document.getElementById("chara-list").value);
+            document.getElementById("chara-list").value = "[]";
+            localStorage.setItem('ultimate-bravery-list', "[]");
+            updateList("unitList", heroData, document.getElementById("chara-list").value);
         }
-        function clickHandler() {
+        function selectUnitHandler() {
             let list = document.getElementById("chara-list").value;
             if(list == null || list == "") {
-                list = "{}";
+                list = "[]";
             }
             list = JSON.parse(list);
-            list[this.getAttribute("nameId")] = {
+            list.push({
+                "id": this.getAttribute("id"),
+                "nameId": this.getAttribute("nameId"),
                 "name": this.getAttribute("name"),
                 "count": 1,
-            };
+            })
             this.classList.add("hidden");
+            list.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
             document.getElementById("chara-list").value = JSON.stringify(list);
             localStorage.setItem('ultimate-bravery-list', document.getElementById("chara-list").value);
         }
         function generateTeam() {
-            const teamData = {};
-            let list = JSON.parse(document.getElementById("chara-list").value);
-            let keys = Object.keys(list);
-            if(Object.keys(list).length < 4) {
+            const teamData = [];
+            const list = [];
+            let baseList = JSON.parse(document.getElementById("chara-list").value);
+            baseList.forEach(unit => {
+                let counter = "";
+                for(let x = 0; x < unit.count; x++) {
+                    if(unit.count > 1) {
+                        counter = " " + (x + 1);
+                    }
+                    list.push({
+                        id: unit.id,
+                        name: unit.name + counter,
+                        nameId: unit.nameId,
+                    });
+                }
+            });
+            if(list.length < 4) {
                 return alert("Not enough units selected");
             }
             for(let i = 0; i < 4; i++) {
-                const index = Math.floor(Math.random() * Object.keys(list).length);
-                teamData[keys[index]] = list[keys[index]]["name"];
-                delete list[keys[index]]; 
-                keys = Object.keys(list);
+                const index = Math.floor(Math.random() * list.length);
+                teamData.push(list[index]);
+                list.splice(index, 1);
             }
-            updateList("draftList", teamData, "{}", 1);
+            updateList("draftList", teamData, "[]", 1);
         }
-        function updateList(location, data, list = null, names = null) {
+        function updateList(location, data, list = null, showNames = 0) {
             document.getElementById(location).innerHTML = "";
             if(list == null || list == "") {
-                list = "{}";
+                list = "[]";
             }
+            list = JSON.parse(list);
 
-            data.forEach(data => {
-                createUnitElem(location, data, names, "selector")
+            data.forEach(unit => {
+                if (!list.some(e => e.id === unit.id)) {
+                    createUnitElem(location, unit, showNames, "selector")
+                }
             });
         }
-        function createUnitElem(location, data, names, eventType) {
-            console.log("data", data);
+        function createUnitElem(location, data, showNames = 0, eventType) {
             const elemDiv = document.createElement('div');
+            elemDiv.setAttribute('id', data.id);
             elemDiv.setAttribute('nameId', data._id);
             elemDiv.setAttribute('name', data.name);
             elemDiv.classList.add("unit");
@@ -99,9 +117,9 @@
             elemDiv.classList.add("hero-image");
             switch (eventType) {
                 case "selector":
-                    elemDiv.addEventListener("click", clickHandler, false);
+                    elemDiv.addEventListener("click", selectUnitHandler, false);
                     break;
-            
+
                 default:
                     console.log("Invalid event sent:", eventType);
                     break;
@@ -109,7 +127,7 @@
 
             elemDiv.innerHTML = "<img class='png-icon medium' src='" +
                 "https://raw.githubusercontent.com/CeciliaBot/E7Assets-Temp/main/assets/face/" + data.id + "_s.png'>";
-            if(names !== null) {
+            if(showNames !== 0) {
                 elemDiv.innerHTML += "<div class='hero-name'>" + data.name + "</div>";
             }
             document.getElementById(location).appendChild(elemDiv);
@@ -118,12 +136,13 @@
             loadHTML("navbar", "/components/html/navbar")
             loadHTML("e7head", "/components/html/e7head")
             if(localStorage.getItem('ultimate-bravery-list') === null) {
-                localStorage.setItem('ultimate-bravery-list', '{}');
+                localStorage.setItem('ultimate-bravery-list', "[]");
             }
             
             getJSON("../data/cecilia-heroes.json").then(data => {
+                heroData = data;
                 document.getElementById("chara-list").value = localStorage.getItem('ultimate-bravery-list');
-                updateList("unitList", data, document.getElementById("chara-list").value);
+                updateList("unitList", heroData, document.getElementById("chara-list").value);
                 return;
             }).catch(error => {
                 console.log(error);
