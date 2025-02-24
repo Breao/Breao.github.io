@@ -79,7 +79,6 @@
             searchBlock("unitList", filter);
         }
         function updateSelect() {
-            console.log('up select')
             let list = JSON.parse(document.getElementById("chara-list").value);
             updateList("selectList", JSON.parse(document.getElementById("chara-list").value), null, 1);
             
@@ -90,12 +89,6 @@
             document.getElementById("chara-list").value = "[]";
             localStorage.setItem('ultimate-bravery-list', "[]");
             updateSelect();
-            updateUnit();
-        }
-        function selectChangeHandler(test) {
-            console.log("selectChangeHandler", test);
-        }
-        function unitChangeHandler(id) {
             updateUnit();
         }
         function selectUnitHandler() {
