@@ -41,6 +41,7 @@
                 </div>
             </div>
             <div id="unitUpdate" class="hidden">
+                <div class="heroBlockList unitList" id="selectList"></div>
             </div>
         </div>
 
@@ -51,6 +52,7 @@
             document.getElementById("chara-list").value = "[]";
             localStorage.setItem('ultimate-bravery-list', "[]");
             updateList("unitList", heroData, document.getElementById("chara-list").value);
+            updateList("selectList", JSON.parse(document.getElementById("chara-list").value), null, 1);
         }
         function selectUnitHandler() {
             let list = document.getElementById("chara-list").value;
@@ -60,11 +62,28 @@
             list = JSON.parse(list);
             list.push({
                 "id": this.getAttribute("id"),
-                "nameId": this.getAttribute("nameId"),
+                "_id": this.getAttribute("_id"),
                 "name": this.getAttribute("name"),
                 "count": 1,
             })
             this.classList.add("hidden");
+            list.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+            document.getElementById("chara-list").value = JSON.stringify(list);
+            localStorage.setItem('ultimate-bravery-list', document.getElementById("chara-list").value);
+        }
+        function updateUnitHandler() {
+            let list = document.getElementById("chara-list").value;
+            if(list == null || list == "") {
+                list = "[]";
+            }
+            list = JSON.parse(list);
+            this.classList.add("hidden");
+            list = list.reduce((acc, item) => {
+                if (item._id !== this.getAttribute("_id")) {
+                    acc.push(item);
+                }
+                return acc;
+            }, []);
             list.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
             document.getElementById("chara-list").value = JSON.stringify(list);
             localStorage.setItem('ultimate-bravery-list', document.getElementById("chara-list").value);
@@ -87,8 +106,7 @@
                     list.push({
                         id: unit.id,
                         name: unit.name + counter,
-                        nameId: unit.nameId,
-                        tag: unit.nameId
+                        _id: unit._id
                     });
                 }
             });
@@ -99,11 +117,11 @@
                 const index = Math.floor(Math.random() * list.length);
                 teamData.push(list[index]);
                 list = list.reduce((acc, item) => {
-                    if (item.tag !== list[index].tag) {
+                    if (item._id !== list[index]._id) {
                         acc.push(item);
                     }
-                return acc;
-            }, []);
+                    return acc;
+                }, []);
             }
             teamData.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
             updateList("draftList", teamData, "[]", 1);
@@ -117,25 +135,28 @@
 
             data.forEach(unit => {
                 if (!list.some(e => e.id === unit.id)) {
-                    createUnitElem(location, unit, showNames, "selector")
+                    createUnitElem(location, unit, showNames)
                 }
             });
         }
-        function createUnitElem(location, data, showNames = 0, eventType) {
+        function createUnitElem(location, data, showNames = 0) {
             const elemDiv = document.createElement('div');
             elemDiv.setAttribute('id', data.id);
-            elemDiv.setAttribute('nameId', data._id);
+            elemDiv.setAttribute('_id', data._id);
             elemDiv.setAttribute('name', data.name);
             elemDiv.classList.add("unit");
             elemDiv.classList.add("heroBlock");
             elemDiv.classList.add("hero-image");
-            switch (eventType) {
-                case "selector":
+            switch (location) {
+                case "unitList":
                     elemDiv.addEventListener("click", selectUnitHandler, false);
+                    break;
+                case "selectList":
+                    elemDiv.addEventListener("click", updateUnitHandler, false);
                     break;
 
                 default:
-                    console.log("Invalid event sent:", eventType);
+                    console.log("No location handler set:", location);
                     break;
             }
 
@@ -156,7 +177,7 @@
             getJSON("../data/cecilia-heroes.json").then(data => {
                 heroData = data;
                 document.getElementById("chara-list").value = localStorage.getItem('ultimate-bravery-list');
-                updateList("unitList", heroData, document.getElementById("chara-list").value);
+                showSelect();
                 return;
             }).catch(error => {
                 console.log(error);
@@ -165,13 +186,14 @@
         }
         
         function showSelect() {
+            updateList("unitList", heroData, document.getElementById("chara-list").value);
             document.getElementById("unitUpdate").classList.add("hidden");
             document.getElementById("unitSelect").classList.remove("hidden");
         }
         function showUpdate() {
+            updateList("selectList", JSON.parse(document.getElementById("chara-list").value), null, 1);
             document.getElementById("unitUpdate").classList.remove("hidden");
             document.getElementById("unitSelect").classList.add("hidden");
-            
         }
     </script>
 </html>
