@@ -80,30 +80,39 @@
             updateList("draftList", teamData, "{}", 1);
         }
         function updateList(location, data, list = null, names = null) {
+            document.getElementById(location).innerHTML = "";
             if(list == null || list == "") {
                 list = "{}";
             }
-            list = JSON.parse(list);
-            document.getElementById(location).innerHTML = "";
-            for (let key in data) {
-                if(data[key] !== "Pre-Balance" && !(key in list)) {
-                    const elemDiv = document.createElement('div');
-                    elemDiv.setAttribute('nameId', key);
-                    elemDiv.setAttribute('name', data[key]);
-                    elemDiv.classList.add("unit");
-                    elemDiv.classList.add("heroBlock");
-                    elemDiv.classList.add("hero-image");
-                    elemDiv.addEventListener("click", clickHandler, false);
 
-                    elemDiv.innerHTML = "<img class='png-icon medium' src='" +
-                    "https://e7calc.xyz/assets/heroes/"+key+"-icon.png" +
-                    "'>";
-                    if(names !== null) {
-                        elemDiv.innerHTML += "<div class='hero-name'>" + data[key] + "</div>";
-                    }
-                    document.getElementById(location).appendChild(elemDiv);
-                }
+            data.forEach(data => {
+                createUnitElem(location, data, names, "selector")
+            });
+        }
+        function createUnitElem(location, data, names, eventType) {
+            console.log("data", data);
+            const elemDiv = document.createElement('div');
+            elemDiv.setAttribute('nameId', data._id);
+            elemDiv.setAttribute('name', data.name);
+            elemDiv.classList.add("unit");
+            elemDiv.classList.add("heroBlock");
+            elemDiv.classList.add("hero-image");
+            switch (eventType) {
+                case "selector":
+                    elemDiv.addEventListener("click", clickHandler, false);
+                    break;
+            
+                default:
+                    console.log("Invalid event sent:", eventType);
+                    break;
             }
+
+            elemDiv.innerHTML = "<img class='png-icon medium' src='" +
+                "https://raw.githubusercontent.com/CeciliaBot/E7Assets-Temp/main/assets/face/" + data.id + "_s.png'>";
+            if(names !== null) {
+                elemDiv.innerHTML += "<div class='hero-name'>" + data.name + "</div>";
+            }
+            document.getElementById(location).appendChild(elemDiv);
         }
         function loadContent() {
             loadHTML("navbar", "/components/html/navbar")
@@ -112,11 +121,9 @@
                 localStorage.setItem('ultimate-bravery-list', '{}');
             }
             
-            // getJSON("https://e7calc.xyz/assets/i18n/us.json").then(data => {
-            getJSON("../data/heroes.json").then(data => {
-                heroData = data;
+            getJSON("../data/cecilia-heroes.json").then(data => {
                 document.getElementById("chara-list").value = localStorage.getItem('ultimate-bravery-list');
-                updateList("unitList", data.heroes, document.getElementById("chara-list").value);
+                updateList("unitList", data, document.getElementById("chara-list").value);
                 return;
             }).catch(error => {
                 console.log(error);
