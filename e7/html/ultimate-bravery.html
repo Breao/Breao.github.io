@@ -88,7 +88,9 @@
             searchBlock("selectList", filter);
         }
         function clearSelection() {
-            confirm("Clear your selection?")
+            if (!confirm("Clear your selection")) {
+                return;
+            }
             document.getElementById("chara-list").value = "[]";
             updateSelect();
             updateUnit();
