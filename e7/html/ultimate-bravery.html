@@ -73,6 +73,7 @@
         }
         function updateUnit() {
             let list = JSON.parse(document.getElementById("chara-list").value);
+            localStorage.setItem('ultimate-bravery-list', JSON.stringify(list));
             updateList("unitList", heroData, JSON.stringify(list));
 
             let filter = document.getElementById("unitSearch").value;
@@ -80,6 +81,7 @@
         }
         function updateSelect() {
             let list = JSON.parse(document.getElementById("chara-list").value);
+            localStorage.setItem('ultimate-bravery-list', JSON.stringify(list));
             updateList("selectList", JSON.parse(document.getElementById("chara-list").value), null, 1);
             
             let filter = document.getElementById("selectSearch").value;
@@ -87,7 +89,6 @@
         }
         function clearSelection() {
             document.getElementById("chara-list").value = "[]";
-            localStorage.setItem('ultimate-bravery-list', "[]");
             updateSelect();
             updateUnit();
         }
