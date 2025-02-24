@@ -69,10 +69,14 @@
         }
         function generateTeam() {
             const teamData = [];
-            const list = [];
+            let list = [];
+            let dupeOffset = 0;
             let baseList = JSON.parse(document.getElementById("chara-list").value);
             baseList.forEach(unit => {
                 let counter = "";
+                if(unit.count > 1) {
+                    dupeOffset++;
+                }
                 for(let x = 0; x < unit.count; x++) {
                     if(unit.count > 1) {
                         counter = " " + (x + 1);
@@ -81,17 +85,24 @@
                         id: unit.id,
                         name: unit.name + counter,
                         nameId: unit.nameId,
+                        tag: unit.nameId
                     });
                 }
             });
-            if(list.length < 4) {
+            if((list.length - dupeOffset) < 4) {
                 return alert("Not enough units selected");
             }
             for(let i = 0; i < 4; i++) {
                 const index = Math.floor(Math.random() * list.length);
                 teamData.push(list[index]);
-                list.splice(index, 1);
+                list = list.reduce((acc, item) => {
+                    if (item.tag !== list[index].tag) {
+                        acc.push(item);
+                    }
+                return acc;
+            }, []);
             }
+            teamData.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
             updateList("draftList", teamData, "[]", 1);
         }
         function updateList(location, data, list = null, showNames = 0) {
