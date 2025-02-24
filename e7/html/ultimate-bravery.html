@@ -77,6 +77,9 @@
                 list = "[]";
             }
             list = JSON.parse(list);
+            if (!confirm("Remove " + this.getAttribute("name") + "?")) {
+                return;
+            }
             this.classList.add("hidden");
             list = list.reduce((acc, item) => {
                 if (item._id !== this.getAttribute("_id")) {
