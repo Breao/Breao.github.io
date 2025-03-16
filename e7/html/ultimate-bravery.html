@@ -167,7 +167,6 @@
                     return acc;
                 }, []);
             }
-            teamData.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
             updateList("draftList", teamData, "[]", 1);
         }
         function updateList(location, data, list = null, showNames = 0) {
