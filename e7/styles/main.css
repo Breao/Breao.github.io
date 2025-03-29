@@ -9,6 +9,10 @@
     text-align: center;
 }
 
+.historyHeader, h5 {
+    margin-top: 8px;
+}
+
 .heroBlockList {
     display: flex;
     flex-wrap: wrap;
