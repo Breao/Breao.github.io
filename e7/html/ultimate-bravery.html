@@ -24,6 +24,11 @@
                 <input class="center" type="number" value="4" id="teamCount">
                 <input class="center" type="button" onclick="generateTeam()" value="Generate Team">
                 <div class="heroBlockList unitList" id="draftList"></div>
+                <input class="center" type="button" onclick="historyToggle()" value="Show/Hide History">
+                <div class="historyHeader hidden" id="historyList">
+                    <div id="historyContent"></div>
+                    <input class="center" type="button" onclick="historyClear()" value="Clear History">
+                </div>
             </div>
             <hr>
             <div>
@@ -36,7 +41,7 @@
             <input type="button" onclick="clearSelection()" value="Clear Selection">
 
             <div id="unitSelect">
-                <input type="button" onclick="updateList('unitList', heroData, document.getElementById('chara-list').value)" value="Manual update">
+                <input type="button" onclick="updateManual()" value="Manual update">
                 <div class="center">
                     <span>Search</span>
                     <input type="text" value="" id="unitSearch" oninput="updateUnit()">
@@ -73,19 +78,29 @@
         }
         function updateUnit() {
             let list = JSON.parse(document.getElementById("chara-list").value);
+            const location = "unitList";
             localStorage.setItem('ultimate-bravery-list', JSON.stringify(list));
-            updateList("unitList", heroData, JSON.stringify(list));
+            document.getElementById(location).innerHTML = "";
+            updateList(location, heroData, JSON.stringify(list));
 
             let filter = document.getElementById("unitSearch").value;
-            searchBlock("unitList", filter);
+            searchBlock(location, filter);
         }
         function updateSelect() {
             let list = JSON.parse(document.getElementById("chara-list").value);
+            const location = "selectList";
             localStorage.setItem('ultimate-bravery-list', JSON.stringify(list));
-            updateList("selectList", JSON.parse(document.getElementById("chara-list").value), null, 1);
+            document.getElementById(location).innerHTML = "";
+            updateList(location, JSON.parse(document.getElementById("chara-list").value), null, 1);
             
             let filter = document.getElementById("selectSearch").value;
             searchBlock("selectList", filter);
+        }
+        function updateManual() {
+            const location = 'unitList';
+            localStorage.setItem('ultimate-bravery-list', document.getElementById('chara-list').value);
+            document.getElementById(location).innerHTML = "";
+            updateList(location, heroData, document.getElementById('chara-list').value)
         }
         function clearSelection() {
             if (!confirm("Clear your selection")) {
@@ -133,6 +148,7 @@
             localStorage.setItem('ultimate-bravery-list', document.getElementById("chara-list").value);
         }
         function generateTeam() {
+            const location = "draftList";
             const teamData = [];
             let list = [];
             let dupeOffset = 0;
@@ -167,17 +183,20 @@
                     return acc;
                 }, []);
             }
-            updateList("draftList", teamData, "[]", 1);
+            document.getElementById(location).innerHTML = "";
+            updateList(location, teamData, "[]", 1);
+            updateHistory(teamData);
         }
         function updateList(location, data, list = null, showNames = 0) {
-            document.getElementById(location).innerHTML = "";
+            
             if(list == null || list == "") {
                 list = "[]";
             }
             list = JSON.parse(list);
 
+            let counter = 1;
             data.forEach(unit => {
-                if (!list.some(e => e._id === unit._id)) {
+            if (!list.some(e => e._id === unit._id)) {
                     createUnitElem(location, unit, showNames)
                 }
             });
@@ -199,7 +218,7 @@
                     break;
 
                 default:
-                    console.log("No location handler set:", location);
+                    // console.log("No location handler set:", location);
                     break;
             }
 
@@ -210,24 +229,66 @@
             }
             document.getElementById(location).appendChild(elemDiv);
         }
+        function historyToggle() {
+            if (document.getElementById("historyList").classList.contains("hidden")) {
+                document.getElementById("historyList").classList.remove("hidden");
+            } else {
+                document.getElementById("historyList").classList.add("hidden");
+            }
+        }
+        function historyClear() {
+            localStorage.setItem('e7-ultimate-bravery-history', JSON.stringify([]));
+            updateHistory();
+            window.scrollTo(0, 0);
+        }
         function loadContent() {
             loadHTML("navbar", "/components/html/navbar")
             loadHTML("e7head", "/components/html/e7head")
             if(localStorage.getItem('ultimate-bravery-list') === null) {
                 localStorage.setItem('ultimate-bravery-list', "[]");
             }
+            if(localStorage.getItem('e7-ultimate-bravery-history') === null) {
+                localStorage.setItem('e7-ultimate-bravery-history', "[]");
+            }
             
             getJSON("../data/cecilia-heroes.json").then(data => {
                 heroData = data;
                 document.getElementById("chara-list").value = localStorage.getItem('ultimate-bravery-list');
                 showUnit();
+                updateHistory();
                 return;
             }).catch(error => {
                 console.log(error);
                 alert("Not able to get unit data");
             });
         }
-        
+        function updateHistory(set = null) {
+            const location = "historyContent";
+            let history = JSON.parse(localStorage.getItem('e7-ultimate-bravery-history'));
+            if(set != null) {
+                history = JSON.parse(localStorage.getItem('e7-ultimate-bravery-history'));
+                history.unshift(set);
+                if (history.length > 5) {
+                    history.pop();
+                }
+                localStorage.setItem('e7-ultimate-bravery-history', JSON.stringify(history));
+            }
+            document.getElementById(location).innerHTML = "";
+            let counter = 1;
+            history.forEach(teams => {
+                const elemHead = document.createElement('h5');
+                elemHead.innerHTML = "Team " + counter;
+                document.getElementById(location).appendChild(elemHead);
+                const elemDiv = document.createElement('div');
+                const id = "history"+counter++;
+                elemDiv.setAttribute('id', id);
+                elemDiv.classList.add("heroBlockList");
+                elemDiv.classList.add("unitList");
+                document.getElementById(location).appendChild(elemDiv);
+                updateList(id, teams, "[]", 1);
+
+            });
+        }
         function showUnit() {
             updateUnit();
             document.getElementById("unitUpdate").classList.add("hidden");

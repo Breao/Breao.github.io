@@ -4,6 +4,11 @@
   padding: 10px;
 }
 
+.historyHeader {
+    width: 100%;
+    text-align: center;
+}
+
 .heroBlockList {
     display: flex;
     flex-wrap: wrap;
