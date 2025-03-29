@@ -266,12 +266,15 @@
             const location = "historyContent";
             let history = JSON.parse(localStorage.getItem('e7-ultimate-bravery-history'));
             if(set != null) {
-                history = JSON.parse(localStorage.getItem('e7-ultimate-bravery-history'));
-                history.unshift(set);
-                if (history.length > 5) {
-                    history.pop();
+                let historyStorage = JSON.parse(localStorage.getItem('e7-ultimate-bravery-history'));
+                historyStorage.unshift(set);
+                if (historyStorage.length > 5) {
+                    historyStorage.pop();
                 }
-                localStorage.setItem('e7-ultimate-bravery-history', JSON.stringify(history));
+                localStorage.setItem('e7-ultimate-bravery-history', JSON.stringify(historyStorage));
+                if(historyStorage.size > 1) {
+                    history = historyStorage;
+                }
             }
             document.getElementById(location).innerHTML = "";
             let counter = 1;
