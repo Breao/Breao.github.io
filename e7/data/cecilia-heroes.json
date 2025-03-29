@@ -647,9 +647,10 @@
             "cmn_single_target",
             "cmn_ab_up",
             "cmn_ab_down",
-            "cmn_aoe",
+            "cmn_non_attack_skill",
             "cmn_barrier_inversion",
             "cmn_dispel",
+            "cmn_aoe",
             "cmn_no_passive_skill",
             "cmn_single_target_no_s1"
         ],
@@ -1991,11 +1992,7 @@
                     [],
                     [],
                     []
-                ],
-                {
-                    "type": "speed",
-                    "value": 5
-                }
+                ]
             ]
         },
         "nicknames": [],
@@ -2014,6 +2011,7 @@
             "cmn_dispel",
             "cmn_ab_up",
             "cmn_attack_scaling",
+            "cmn_ignore_res",
             "cmn_detonate",
             "cmn_no_passive_skill"
         ],
@@ -8719,6 +8717,7 @@
             "cmn_resource_reduction",
             "cmn_dispel",
             "cmn_ab_down",
+            "cmn_ignore_res",
             "cmn_ab_up",
             "cmn_passive_skill",
             "cmn_single_target_no_s1"
@@ -12113,7 +12112,19 @@
                     []
                 ]
             ],
-            "ex_equip": []
+            "ex_equip": [
+                [
+                    [
+                        {
+                            "type": "speed",
+                            "value": 5
+                        }
+                    ],
+                    [],
+                    [],
+                    []
+                ]
+            ]
         },
         "nicknames": [
             "Hachates",
@@ -12145,7 +12156,7 @@
             "cmn_no_passive_skill"
         ],
         "created_dt": 0,
-        "updated_dt": 1705599813308
+        "updated_dt": 1741901405073
     },
     {
         "_id": "inheritor-amiki",
@@ -14098,8 +14109,9 @@
             "cmn_attack_scaling",
             "cmn_non_attack_skill",
             "cmn_ignore_dmg_sharing",
+            "cmn_extra_turn",
             "cmn_ignore_res",
-            "cmn_dispel",
+            "cmn_dispel_stealth",
             "cmn_no_passive_skill",
             "cmn_single_target_no_s1"
         ],
@@ -22515,6 +22527,75 @@
         "updated_dt": 0
     },
     {
+        "_id": "successor-taeyou",
+        "id": "c2127",
+        "name": "Successor Taeyou",
+        "rarity": 5,
+        "role": "warrior",
+        "attribute": "light",
+        "zodiac": "scales",
+        "sex": 1,
+        "tags": [
+            0
+        ],
+        "devotion": {
+            "type": "att_rate",
+            "slots": [
+                1,
+                1,
+                1,
+                1
+            ]
+        },
+        "self_devotion": {
+            "type": "att_rate"
+        },
+        "stats": {
+            "bra": 98,
+            "int": 97,
+            "fai": 69,
+            "des": 79,
+            "skills": [
+                [
+                    [],
+                    []
+                ],
+                [
+                    [],
+                    []
+                ],
+                [
+                    [],
+                    []
+                ]
+            ],
+            "ex_equip": []
+        },
+        "nicknames": [],
+        "buff": [
+            "stic_att_up",
+            "stic_possession_keep",
+            "stic_invincible"
+        ],
+        "debuff": [
+            "stic_def_dn"
+        ],
+        "common": [
+            "cmn_single_target",
+            "cmn_ab_down",
+            "cmn_always_cri",
+            "cmn_fighting_spirit",
+            "cmn_ab_up",
+            "cmn_non_attack_skill",
+            "cmn_dispel",
+            "cmn_extra_turn",
+            "cmn_ignore_res",
+            "cmn_passive_skill"
+        ],
+        "created_dt": 1740702418248,
+        "updated_dt": 0
+    },
+    {
         "_id": "summer-break-charlotte",
         "id": "c5009",
         "name": "Summer Break Charlotte",
@@ -24444,10 +24525,24 @@
                     []
                 ]
             ],
-            "ex_equip": []
+            "ex_equip": [
+                [
+                    [
+                        {
+                            "type": "acc",
+                            "value": 0.08
+                        }
+                    ],
+                    [],
+                    [],
+                    []
+                ]
+            ]
         },
         "nicknames": [],
-        "buff": [],
+        "buff": [
+            "stic_att_up"
+        ],
         "debuff": [
             "stic_bomb",
             "stic_def_dn"
@@ -24459,11 +24554,12 @@
             "cmn_dispel",
             "cmn_ignore_res",
             "cmn_extra_turn",
+            "cmn_ab_down",
             "cmn_passive_skill",
             "cmn_single_target_no_s1"
         ],
         "created_dt": 0,
-        "updated_dt": 1729775533319
+        "updated_dt": 1741901148641
     },
     {
         "_id": "vigilante-leader-glenn",
