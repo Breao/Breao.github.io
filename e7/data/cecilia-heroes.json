@@ -281,7 +281,10 @@
             ],
             "ex_equip": []
         },
-        "nicknames": [],
+        "nicknames": [
+            "ML Adin",
+            "Dark Adin"
+        ],
         "buff": [
             "stic_weakness_keep",
             "stic_att_up"
@@ -1261,7 +1264,9 @@
                 ]
             ]
         },
-        "nicknames": [],
+        "nicknames": [
+            "Grandma"
+        ],
         "buff": [
             "stic_wildeye",
             "stic_def_up"
@@ -1837,11 +1842,7 @@
                     [],
                     [],
                     []
-                ],
-                {
-                    "type": "speed",
-                    "value": 5
-                }
+                ]
             ]
         },
         "nicknames": [],
@@ -4485,6 +4486,72 @@
         "updated_dt": 0
     },
     {
+        "_id": "boss-arunka",
+        "id": "c2124",
+        "name": "Boss Arunka",
+        "rarity": 5,
+        "role": "knight",
+        "attribute": "light",
+        "zodiac": "goat",
+        "sex": 2,
+        "tags": [
+            0
+        ],
+        "devotion": {
+            "type": "att_rate",
+            "slots": [
+                1,
+                1,
+                1,
+                1
+            ]
+        },
+        "self_devotion": {
+            "type": "def_rate"
+        },
+        "stats": {
+            "bra": 69,
+            "int": 117,
+            "fai": 104,
+            "des": 53,
+            "skills": [
+                [
+                    [],
+                    []
+                ],
+                [
+                    [],
+                    []
+                ],
+                [
+                    [],
+                    []
+                ]
+            ],
+            "ex_equip": []
+        },
+        "nicknames": [],
+        "buff": [
+            "stic_guardian_keep",
+            "stic_protect",
+            "stic_def_up"
+        ],
+        "debuff": [
+            "stic_def_dn"
+        ],
+        "common": [
+            "cmn_single_target",
+            "cmn_def_scaling",
+            "cmn_dual_attack",
+            "cmn_ab_up",
+            "cmn_dispel",
+            "cmn_passive_skill",
+            "cmn_single_target_no_s1"
+        ],
+        "created_dt": 1744590104122,
+        "updated_dt": 0
+    },
+    {
         "_id": "briar-witch-iseria",
         "id": "c2024",
         "name": "Briar Witch Iseria",
@@ -4815,7 +4882,10 @@
             ],
             "ex_equip": []
         },
-        "nicknames": [],
+        "nicknames": [
+            "ML Hwayoung",
+            "Bwayoung"
+        ],
         "buff": [],
         "debuff": [],
         "common": [
@@ -7721,11 +7791,7 @@
                     [],
                     [],
                     []
-                ],
-                {
-                    "type": "res",
-                    "value": 0.08
-                }
+                ]
             ]
         },
         "nicknames": [],
@@ -7746,7 +7812,7 @@
             "cmn_no_passive_skill"
         ],
         "created_dt": 0,
-        "updated_dt": 0
+        "updated_dt": 1744591609650
     },
     {
         "_id": "diene",
@@ -8254,7 +8320,7 @@
         "rarity": 5,
         "role": "manauser",
         "attribute": "light",
-        "zodiac": "maiden",
+        "zodiac": "scorpion",
         "sex": 2,
         "tags": [
             0
@@ -8272,10 +8338,10 @@
             "type": "acc"
         },
         "stats": {
-            "bra": 54,
-            "int": 86,
-            "fai": 94,
-            "des": 65,
+            "bra": 70,
+            "int": 70,
+            "fai": 81,
+            "des": 87,
             "skills": [
                 [
                     [],
@@ -8293,28 +8359,31 @@
             "ex_equip": []
         },
         "nicknames": [
-            "ML Sharun"
+            "ML Sharun",
+            "DKS"
         ],
         "buff": [
             "stic_dmg_fixed_keep"
         ],
         "debuff": [
             "stic_stun",
+            "stic_class_debuff_1",
             "stic_att_dn",
             "stic_def_dn",
-            "stic_class_debuff_1"
+            "stic_buf_impossible"
         ],
         "common": [
             "cmn_single_target",
             "cmn_ab_up",
             "cmn_debuff_prevent_movement",
+            "cmn_cleanse",
             "cmn_aoe",
             "cmn_decrease_buff_duration",
             "cmn_ab_down",
             "cmn_passive_skill"
         ],
         "created_dt": 1704307343492,
-        "updated_dt": 0
+        "updated_dt": 1744591331272
     },
     {
         "_id": "eaton",
@@ -9656,11 +9725,15 @@
         "common": [
             "cmn_single_target",
             "cmn_max_health_scaling",
+            "cmn_ignore_res",
+            "cmn_decrease_fxd_add_damage",
             "cmn_aoe",
+            "cmn_dispel",
+            "cmn_debuff_transfer",
             "cmn_passive_skill"
         ],
         "created_dt": 0,
-        "updated_dt": 0
+        "updated_dt": 1744591257563
     },
     {
         "_id": "fenne",
@@ -10367,11 +10440,7 @@
                     [],
                     [],
                     []
-                ],
-                {
-                    "type": "max_hp_rate",
-                    "value": 0.07
-                }
+                ]
             ]
         },
         "nicknames": [
@@ -10714,6 +10783,75 @@
             "cmn_passive_skill"
         ],
         "created_dt": 0,
+        "updated_dt": 0
+    },
+    {
+        "_id": "guard-captain-krau",
+        "id": "c5070",
+        "name": "Guard Captain Krau",
+        "rarity": 5,
+        "role": "warrior",
+        "attribute": "fire",
+        "zodiac": "ram",
+        "sex": 1,
+        "tags": [
+            0
+        ],
+        "devotion": {
+            "type": "max_hp_rate",
+            "slots": [
+                1,
+                1,
+                1,
+                1
+            ]
+        },
+        "self_devotion": {
+            "type": "def_rate"
+        },
+        "stats": {
+            "bra": 92,
+            "int": 97,
+            "fai": 67,
+            "des": 86,
+            "skills": [
+                [
+                    [],
+                    []
+                ],
+                [
+                    [],
+                    []
+                ],
+                [
+                    [],
+                    []
+                ]
+            ],
+            "ex_equip": []
+        },
+        "nicknames": [],
+        "buff": [
+            "stic_haki"
+        ],
+        "debuff": [
+            "stic_stun"
+        ],
+        "common": [
+            "cmn_single_target",
+            "cmn_ab_up",
+            "cmn_additional_dmg",
+            "cmn_def_scaling",
+            "cmn_ab_down",
+            "cmn_ignore_res",
+            "cmn_aoe",
+            "cmn_lifesteal",
+            "cmn_cant_crit",
+            "cmn_penetration",
+            "cmn_no_passive_skill",
+            "cmn_single_target_no_s1"
+        ],
+        "created_dt": 1744589316464,
         "updated_dt": 0
     },
     {
@@ -11429,7 +11567,10 @@
             ],
             "ex_equip": []
         },
-        "nicknames": [],
+        "nicknames": [
+            "ML Lua",
+            "Hellua"
+        ],
         "buff": [
             "stic_challenge_keep",
             "stic_def_up"
@@ -12256,7 +12397,8 @@
         "sex": 2,
         "tags": [
             0,
-            100
+            100,
+            3
         ],
         "devotion": {
             "type": "att_rate",
@@ -13106,7 +13248,7 @@
             ]
         },
         "self_devotion": {
-            "type": "att_rate"
+            "type": "cri"
         },
         "stats": {
             "bra": 98,
@@ -13138,11 +13280,7 @@
                     [],
                     [],
                     []
-                ],
-                {
-                    "type": "cri",
-                    "value": 0.06
-                }
+                ]
             ]
         },
         "nicknames": [
@@ -13162,12 +13300,13 @@
             "cmn_aoe",
             "cmn_caste_lost_health_scaling",
             "cmn_skill_cd_down",
+            "cmn_lifesteal",
             "cmn_buff_extend",
             "cmn_passive_skill",
             "cmn_single_target_no_s1"
         ],
         "created_dt": 0,
-        "updated_dt": 0
+        "updated_dt": 1744591493544
     },
     {
         "_id": "ken",
@@ -14029,7 +14168,7 @@
             "cmn_passive_skill"
         ],
         "created_dt": 0,
-        "updated_dt": 0
+        "updated_dt": 1744591625810
     },
     {
         "_id": "last-piece-karin",
@@ -14473,11 +14612,12 @@
             "cmn_single_target",
             "cmn_extra_attack",
             "cmn_extinction",
-            "cmn_penetration",
+            "cmn_heal",
+            "cmn_ab_up",
             "cmn_cant_crit",
+            "cmn_penetration",
             "cmn_max_health_scaling",
             "cmn_target_max_health",
-            "cmn_heal",
             "cmn_free_soulburn",
             "cmn_effect_ignore_miss",
             "cmn_aoe",
@@ -14487,7 +14627,7 @@
             "cmn_passive_skill"
         ],
         "created_dt": 0,
-        "updated_dt": 1722513402403
+        "updated_dt": 1744591523728
     },
     {
         "_id": "lidica",
@@ -14543,11 +14683,7 @@
                     [],
                     [],
                     []
-                ],
-                {
-                    "type": "acc",
-                    "value": 0.08
-                }
+                ]
             ]
         },
         "nicknames": [],
@@ -14555,24 +14691,25 @@
             "stic_endure"
         ],
         "debuff": [
-            "stic_blind",
-            "stic_heal_impossible",
-            "stic_dodge_dn"
+            "stic_blood",
+            "stic_restrict",
+            "stic_def_dn",
+            "stic_ab_up_block"
         ],
         "common": [
             "cmn_single_target",
-            "cmn_ab_down",
-            "cmn_enemy_debuffed",
+            "cmn_detonate",
             "cmn_aoe",
-            "cmn_dispel",
-            "cmn_ignore_res",
+            "cmn_resource_reduction",
             "cmn_decrease_buff_duration",
-            "cmn_dmg_increase",
+            "cmn_ab_up",
+            "cmn_ignore_res",
+            "cmn_ab_down",
             "cmn_no_passive_skill",
             "cmn_single_target_no_s1"
         ],
         "created_dt": 0,
-        "updated_dt": 0
+        "updated_dt": 1744591362472
     },
     {
         "_id": "lilias",
@@ -15063,7 +15200,9 @@
             ],
             "ex_equip": []
         },
-        "nicknames": [],
+        "nicknames": [
+            "ML Peira"
+        ],
         "buff": [
             "stic_overrun_keep",
             "stic_rush"
@@ -15850,7 +15989,7 @@
             "cmn_passive_skill"
         ],
         "created_dt": 0,
-        "updated_dt": 0
+        "updated_dt": 1744591283753
     },
     {
         "_id": "mascot-hazel",
@@ -17884,11 +18023,7 @@
                     [],
                     [],
                     []
-                ],
-                {
-                    "type": "cri",
-                    "value": 0.06
-                }
+                ]
             ]
         },
         "nicknames": [],
@@ -20034,7 +20169,6 @@
             "cmn_ab_up",
             "cmn_aoe",
             "cmn_dispel",
-            "cmn_barrier_inversion",
             "cmn_max_health_scaling",
             "cmn_no_passive_skill"
         ],
@@ -20162,11 +20296,7 @@
                     [],
                     [],
                     []
-                ],
-                {
-                    "type": "speed",
-                    "value": 5
-                }
+                ]
             ]
         },
         "nicknames": [],
@@ -20736,11 +20866,7 @@
                     [],
                     [],
                     []
-                ],
-                {
-                    "type": "att_rate",
-                    "value": 0.07
-                }
+                ]
             ]
         },
         "nicknames": [
@@ -20755,15 +20881,16 @@
         ],
         "common": [
             "cmn_single_target",
-            "cmn_damage_share",
+            "cmn_damage_reduction",
+            "cmn_focus",
             "cmn_extra_attack",
             "cmn_aoe",
-            "cmn_focus",
+            "cmn_dispel",
             "cmn_ignore_res",
             "cmn_passive_skill"
         ],
         "created_dt": 0,
-        "updated_dt": 0
+        "updated_dt": 1744591508632
     },
     {
         "_id": "senya",
@@ -22435,20 +22562,32 @@
                     []
                 ]
             ],
-            "ex_equip": []
+            "ex_equip": [
+                [
+                    [
+                        {
+                            "type": "cri",
+                            "value": 0.06
+                        }
+                    ],
+                    [],
+                    [],
+                    []
+                ]
+            ]
         },
         "nicknames": [
             "Seline",
             "ML Celine"
         ],
         "buff": [
+            "stic_att_up",
             "stic_possession_keep",
             "stic_immortality"
         ],
         "debuff": [],
         "common": [
             "cmn_single_target",
-            "cmn_cleanse",
             "cmn_lifesteal",
             "cmn_penetration",
             "cmn_extra_turn",
@@ -22456,10 +22595,12 @@
             "cmn_skill_cd_down",
             "cmn_non_attack_skill",
             "cmn_revive",
+            "cmn_cleanse",
+            "cmn_free_soulburn",
             "cmn_passive_skill"
         ],
         "created_dt": 0,
-        "updated_dt": 1705598837950
+        "updated_dt": 1744591302315
     },
     {
         "_id": "straze",
@@ -22571,7 +22712,9 @@
             ],
             "ex_equip": []
         },
-        "nicknames": [],
+        "nicknames": [
+            "ML Taeyou"
+        ],
         "buff": [
             "stic_att_up",
             "stic_possession_keep",
@@ -23141,22 +23284,22 @@
             "SVivi",
             "ML Vivian"
         ],
-        "buff": [
-            "stic_speed_up"
-        ],
+        "buff": [],
         "debuff": [],
         "common": [
             "cmn_single_target",
+            "cmn_ab_up",
+            "cmn_extra_attack",
             "cmn_aoe",
             "cmn_focus",
             "cmn_damage_reduction",
             "cmn_heal",
             "cmn_attack_scaling",
-            "cmn_more_enemies_scaling",
+            "cmn_skill_cd_down",
             "cmn_passive_skill"
         ],
         "created_dt": 0,
-        "updated_dt": 0
+        "updated_dt": 1744591316321
     },
     {
         "_id": "taeyou",
@@ -23951,7 +24094,9 @@
             ],
             "ex_equip": []
         },
-        "nicknames": [],
+        "nicknames": [
+            "Dotori"
+        ],
         "buff": [
             "stic_protect",
             "stic_dmg_fixed_keep",
@@ -24113,7 +24258,6 @@
         "debuff": [],
         "common": [
             "cmn_single_target",
-            "cmn_target_lost_health",
             "cmn_aoe",
             "cmn_max_health_scaling",
             "cmn_ab_up",
@@ -24560,6 +24704,69 @@
         ],
         "created_dt": 0,
         "updated_dt": 1741901148641
+    },
+    {
+        "_id": "victorika",
+        "id": "c1166",
+        "name": "Victorika",
+        "rarity": 4,
+        "role": "knight",
+        "attribute": "fire",
+        "zodiac": "lion",
+        "sex": 2,
+        "tags": [
+            3
+        ],
+        "devotion": {
+            "type": "max_hp_rate",
+            "slots": [
+                1,
+                1,
+                1,
+                1
+            ]
+        },
+        "self_devotion": {
+            "type": "att_rate"
+        },
+        "stats": {
+            "bra": 84,
+            "int": 89,
+            "fai": 81,
+            "des": 60,
+            "skills": [
+                [
+                    [],
+                    []
+                ],
+                [
+                    [],
+                    []
+                ],
+                [
+                    [],
+                    []
+                ]
+            ],
+            "ex_equip": []
+        },
+        "nicknames": [],
+        "buff": [
+            "stic_counter",
+            "stic_debuf_impossible"
+        ],
+        "debuff": [
+            "stic_def_dn"
+        ],
+        "common": [
+            "cmn_single_target",
+            "cmn_aoe",
+            "cmn_target_max_health",
+            "cmn_no_passive_skill",
+            "cmn_single_target_no_s1"
+        ],
+        "created_dt": 1744588547505,
+        "updated_dt": 0
     },
     {
         "_id": "vigilante-leader-glenn",
@@ -25153,12 +25360,13 @@
             "cmn_single_target",
             "cmn_dispel",
             "cmn_penetration",
+            "cmn_hit_chance_up",
             "cmn_ab_down",
             "cmn_no_passive_skill",
             "cmn_single_target_no_s1"
         ],
         "created_dt": 0,
-        "updated_dt": 0
+        "updated_dt": 1744591666644
     },
     {
         "_id": "westwind-executioner-schuri",
@@ -25241,7 +25449,9 @@
             ],
             "ex_equip": []
         },
-        "nicknames": [],
+        "nicknames": [
+            "ML Schuri"
+        ],
         "buff": [
             "stic_explosive_keep"
         ],
