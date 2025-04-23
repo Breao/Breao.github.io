@@ -65,7 +65,7 @@
             var input, unitBlock, unit, a, b;
             filter = filter.toString().toUpperCase();
             unitBlock = document.getElementById(location);
-            unit = unitBlock.getElementsByTagName("div");
+            unit = unitBlock.getElementsByClassName("heroBlock");
             for (let i = 0; i < unit.length; i++) {
                 a = unit[i].getAttribute("_id");
                 b = unit[i].getAttribute("name");
@@ -127,22 +127,32 @@
             document.getElementById("chara-list").value = JSON.stringify(list);
             localStorage.setItem('ultimate-bravery-list', document.getElementById("chara-list").value);
         }
-        function updateUnitHandler() {
+        function updateUnitHandler(elem) {
             let list = document.getElementById("chara-list").value;
             if(list == null || list == "") {
                 list = "[]";
             }
             list = JSON.parse(list);
-            if (!confirm("Remove " + this.getAttribute("name") + "?")) {
-                return;
-            }
-            this.classList.add("hidden");
-            list = list.reduce((acc, item) => {
-                if (item._id !== this.getAttribute("_id")) {
-                    acc.push(item);
+            const unitIndex = list.findIndex(e => e.id === elem.getAttribute("heroId"));
+            if(elem.value == "-" && list[unitIndex].count == 1) {
+                if (!confirm("Remove " + elem.getAttribute("name") + "?")) {
+                    return;
                 }
-                return acc;
-            }, []);
+                elem.parentElement.classList.add("hidden");
+                list = list.reduce((acc, item) => {
+                    if (item.id !== elem.getAttribute("heroId")) {
+                        acc.push(item);
+                    }
+                    return acc;
+                }, []);
+            }
+            else if(elem.value == "+") {
+                list[unitIndex].count++;
+            }
+            else if(elem.value == "-") {
+                list[unitIndex].count--;
+            }
+            document.getElementById(list[unitIndex].id+"SL_count").innerHTML = list[unitIndex].count;
             list.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
             document.getElementById("chara-list").value = JSON.stringify(list);
             localStorage.setItem('ultimate-bravery-list', document.getElementById("chara-list").value);
@@ -157,16 +167,16 @@
             baseList.forEach(unit => {
                 let counter = "";
                 if(unit.count > 1) {
-                    dupeOffset++;
+                    dupeOffset += (unit.count-1);
                 }
                 for(let x = 0; x < unit.count; x++) {
                     if(unit.count > 1) {
-                        counter = " " + (x + 1);
+                        counter = " " + (x + 1)+"/"+unit.count;
                     }
                     list.push({
                         id: unit.id,
                         name: unit.name + counter,
-                        _id: unit._id
+                        _id: unit._id+"-"+counter
                     });
                 }
             });
@@ -177,7 +187,7 @@
                 const index = Math.floor(Math.random() * list.length);
                 teamData.push(list[index]);
                 list = list.reduce((acc, item) => {
-                    if (item._id !== list[index]._id) {
+                    if (item.id !== list[index].id) {
                         acc.push(item);
                     }
                     return acc;
@@ -188,7 +198,6 @@
             updateHistory(teamData);
         }
         function updateList(location, data, list = null, showNames = 0) {
-            
             if(list == null || list == "") {
                 list = "[]";
             }
@@ -209,12 +218,55 @@
             elemDiv.classList.add("unit");
             elemDiv.classList.add("heroBlock");
             elemDiv.classList.add("hero-image");
+
+            const labelDiv = document.createElement('div');
+            const labelImg = document.createElement('img');
+            labelImg.classList.add("png-icon")
+            labelImg.classList.add("medium")
+            labelImg.setAttribute('src', "https://raw.githubusercontent.com/CeciliaBot/E7Assets-Temp/main/assets/face/" + data.id + "_s.png");
+            labelDiv.appendChild(labelImg);
+            
+            if(showNames !== 0) {
+                const labelSpan = document.createElement('span');
+                labelSpan.classList.add("hero-name");
+                labelSpan.classList.add(data.id+"-hero-name");
+                labelSpan.innerHTML = data.name;
+                labelDiv.appendChild(labelSpan);
+            }
+
             switch (location) {
                 case "unitList":
                     elemDiv.addEventListener("click", selectUnitHandler, false);
                     break;
                 case "selectList":
-                    elemDiv.addEventListener("click", updateUnitHandler, false);
+                    labelDiv.appendChild(document.createElement('br'));
+
+                    const labelCount = document.createElement("span");
+                    labelCount.innerHTML = data.count;
+                    labelCount.setAttribute("count", true);
+                    labelCount.setAttribute('id', data.id+"SL_count");
+
+                    const labelPlus = document.createElement("input");
+                    labelPlus.classList.add("SL-btn")
+                    labelPlus.setAttribute("type", "button");
+                    labelPlus.setAttribute("value", "+");
+                    labelPlus.setAttribute("heroId", data.id);
+                    labelPlus.setAttribute('_id', data._id);
+                    labelPlus.setAttribute('name', data.name);
+                    labelPlus.setAttribute('onclick', "updateUnitHandler(this)");
+
+                    const labelMinus = document.createElement("input");
+                    labelMinus.classList.add("SL-btn")
+                    labelMinus.setAttribute("type", "button");
+                    labelMinus.setAttribute("value", "-");
+                    labelMinus.setAttribute("heroId", data.id);
+                    labelMinus.setAttribute('_id', data._id);
+                    labelMinus.setAttribute('name', data.name);
+                    labelMinus.setAttribute('onclick', "updateUnitHandler(this)");
+
+                    labelDiv.appendChild(labelMinus);
+                    labelDiv.appendChild(labelCount);
+                    labelDiv.appendChild(labelPlus);
                     break;
 
                 default:
@@ -222,11 +274,7 @@
                     break;
             }
 
-            elemDiv.innerHTML = "<img class='png-icon medium' src='" +
-                "https://raw.githubusercontent.com/CeciliaBot/E7Assets-Temp/main/assets/face/" + data.id + "_s.png'>";
-            if(showNames !== 0) {
-                elemDiv.innerHTML += "<span class='hero-name'>" + data.name + "</span>";
-            }
+            elemDiv.appendChild(labelDiv);
             document.getElementById(location).appendChild(elemDiv);
         }
         function historyToggle() {
