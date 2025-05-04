@@ -1847,8 +1847,8 @@
         },
         "nicknames": [],
         "buff": [
-            "stic_protect",
-            "stic_debuf_impossible"
+            "stic_debuf_impossible",
+            "stic_protect"
         ],
         "debuff": [
             "stic_stun"
@@ -5674,11 +5674,7 @@
                     [],
                     [],
                     []
-                ],
-                {
-                    "type": "att_rate",
-                    "value": 0.07
-                }
+                ]
             ]
         },
         "nicknames": [],
@@ -7719,7 +7715,7 @@
             "stic_debuf_impossible"
         ],
         "debuff": [
-            "stic_silence"
+            "stic_def_dn"
         ],
         "common": [
             "cmn_single_target",
@@ -11581,8 +11577,9 @@
         "common": [
             "cmn_single_target",
             "cmn_ab_up",
+            "cmn_counterattack",
             "cmn_non_attack_skill",
-            "cmn_skill_cd_down",
+            "cmn_decrease_buff_duration",
             "cmn_passive_skill"
         ],
         "created_dt": 1729759518922,
@@ -19880,6 +19877,76 @@
             "cmn_single_target_no_s1"
         ],
         "created_dt": 0,
+        "updated_dt": 0
+    },
+    {
+        "_id": "rinak",
+        "id": "c1168",
+        "name": "Rinak",
+        "rarity": 5,
+        "role": "assassin",
+        "attribute": "wind",
+        "zodiac": "bull",
+        "sex": 2,
+        "tags": [
+            0,
+            1
+        ],
+        "devotion": {
+            "type": "att_rate",
+            "slots": [
+                1,
+                1,
+                1,
+                1
+            ]
+        },
+        "self_devotion": {
+            "type": "att_rate"
+        },
+        "stats": {
+            "bra": 90,
+            "int": 93,
+            "fai": 37,
+            "des": 105,
+            "skills": [
+                [
+                    [],
+                    []
+                ],
+                [
+                    [],
+                    []
+                ],
+                [
+                    [],
+                    []
+                ]
+            ],
+            "ex_equip": []
+        },
+        "nicknames": [],
+        "buff": [
+            "stic_thief_aura",
+            "stic_att_up"
+        ],
+        "debuff": [
+            "stic_thievery_aura",
+            "stic_stun"
+        ],
+        "common": [
+            "cmn_single_target",
+            "cmn_penetration",
+            "cmn_cant_crit",
+            "cmn_speed_scaling",
+            "cmn_ab_down",
+            "cmn_extra_turn",
+            "cmn_ignore_res",
+            "cmn_fixed_damage",
+            "cmn_no_passive_skill",
+            "cmn_single_target_no_s1"
+        ],
+        "created_dt": 1745495253438,
         "updated_dt": 0
     },
     {
