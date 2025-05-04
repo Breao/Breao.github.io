@@ -223,7 +223,7 @@
             const labelImg = document.createElement('img');
             labelImg.classList.add("png-icon")
             labelImg.classList.add("medium")
-            labelImg.setAttribute('src', "https://raw.githubusercontent.com/CeciliaBot/E7Assets-Temp/main/assets/face/" + data.id + "_s.png");
+            labelImg.setAttribute('src', "../assets/imgs/face/" + data.id + "_s.png");
             labelDiv.appendChild(labelImg);
             
             if(showNames !== 0) {
@@ -299,7 +299,7 @@
                 localStorage.setItem('e7-ultimate-bravery-history', "[]");
             }
             
-            getJSON("../data/cecilia-heroes.json").then(data => {
+            getJSON("../assets/data/cecilia-heroes.json").then(data => {
                 heroData = data;
                 document.getElementById("chara-list").value = localStorage.getItem('ultimate-bravery-list');
                 showUnit();
