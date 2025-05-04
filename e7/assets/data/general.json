@@ -1,0 +1,22 @@
+{
+    "elements": [
+        "fire",
+        "ice",
+        "wind",
+        "light",
+        "dark"
+    ],
+    "classes": [
+        "warrior",
+        "knight",
+        "assassin",
+        "ranger",
+        "mage",
+        "manauser"
+    ],
+    "rarity": [
+        5,
+        4,
+        3
+    ]
+}
