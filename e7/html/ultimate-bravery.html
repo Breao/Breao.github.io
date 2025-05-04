@@ -23,6 +23,7 @@
                 <p class="center">Team Size</p>
                 <input class="center" type="number" value="4" id="teamCount">
                 <input class="center" type="button" onclick="generateTeam()" value="Generate Team">
+                <label class="center" ><input type="checkbox" id="noDupes"> No Historical Dupes</label>
                 <div class="heroBlockList unitList" id="draftList"></div>
                 <input class="center" type="button" onclick="historyToggle()" value="Show/Hide History">
                 <div class="historyHeader hidden" id="historyList">
@@ -158,6 +159,15 @@
             localStorage.setItem('ultimate-bravery-list', document.getElementById("chara-list").value);
         }
         function generateTeam() {
+            const historyIds = [];
+            if(document.getElementById("noDupes").checked) {
+                const history = JSON.parse(localStorage.getItem('e7-ultimate-bravery-history'));
+                history.forEach(team => {
+                    team.forEach(unit => {
+                        historyIds.push(unit.id);
+                    })
+                })
+            }
             const location = "draftList";
             const teamData = [];
             let list = [];
@@ -165,6 +175,10 @@
             let baseList = JSON.parse(document.getElementById("chara-list").value);
             let teamSize = document.getElementById("teamCount").value;
             baseList.forEach(unit => {
+                if(document.getElementById("noDupes").checked) {
+                    if(historyIds.includes(unit.id)) return;
+                }
+                
                 let counter = "";
                 if(unit.count > 1) {
                     dupeOffset += (unit.count-1);
