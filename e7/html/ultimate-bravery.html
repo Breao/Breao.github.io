@@ -19,7 +19,7 @@
         <nav id="navbar"></nav>
         <nav id="e7head"></nav>
         <div id="content">
-            <div>
+            <div id="team-gen">
                 <p class="center">Team Size</p>
                 <input class="center" type="number" value="4" id="teamCount">
                 <input class="center" type="button" onclick="generateTeam()" value="Generate Team">
@@ -32,17 +32,20 @@
                 </div>
             </div>
             <hr>
-            <div>
+            <div id="team-controls">
                 <input type="button" value="Select Units" onclick="showUnit()">
                 <input type="button" value="Update Unit List" onclick="showUpdate()">
             </div>
 
             <hr>
-            <textarea id="chara-list"></textarea>
-            <input type="button" onclick="clearSelection()" value="Clear Selection">
+            <input type="button" onclick="viewToggle('manual-controls')" value="Show Manual Controls">
+            <div id="manual-controls" class="hidden">
+                <input type="button" onclick="clearSelection()" value="Clear Selection">
+                <input type="button" onclick="updateManual()" value="Save Changes">
+                <textarea id="chara-list" cols="50"></textarea>
+            </div>
 
             <div id="unitSelect">
-                <input type="button" onclick="updateManual()" value="Manual update">
                 <div class="center">
                     <span>Search</span>
                     <input type="text" value="" id="unitSearch" oninput="updateUnit()">
@@ -98,6 +101,9 @@
             searchBlock("selectList", filter);
         }
         function updateManual() {
+            if (!confirm("Save changes?")) {
+                return;
+            }
             const location = 'unitList';
             localStorage.setItem('ultimate-bravery-list', document.getElementById('chara-list').value);
             document.getElementById(location).innerHTML = "";
@@ -365,6 +371,13 @@
             updateSelect();
             document.getElementById("unitUpdate").classList.remove("hidden");
             document.getElementById("unitSelect").classList.add("hidden");
+        }
+        function viewToggle(elem) {
+            if (document.getElementById(elem).classList.contains("hidden")) {
+                document.getElementById(elem).classList.remove("hidden");
+            } else {
+                document.getElementById(elem).classList.add("hidden");
+            }
         }
     </script>
 </html>
