@@ -7,23 +7,24 @@ body {
     margin-left: auto;
     margin-right: auto;
     width: 50%;
-  }
+}
 
-.center > img {
+.center>img {
     min-width: 500px;
     max-width: 450px;
 }
 
-.content > .flex-container {
+.content>.flex-container {
     display: flex;
     flex-flow: row wrap;
 }
 
-.content > .flex-container > .flex-list {
-    flex: 1 1 0%; overflow: auto;
+.content>.flex-container>.flex-list {
+    flex: 1 1 0%;
+    overflow: auto;
 }
 
-.content > .flex-container > div {
+.content>.flex-container>div {
     /* background-color: #f1f1f1; */
     width: 100px;
     margin: 10px;

@@ -1,7 +1,7 @@
 .center {
-  margin: auto;
-  width: 50%;
-  padding: 10px;
+    margin: auto;
+    width: 50%;
+    padding: 10px;
 }
 
 .historyHeader {
@@ -9,7 +9,8 @@
     text-align: center;
 }
 
-.historyHeader, h5 {
+.historyHeader,
+h5 {
     margin-top: 8px;
 }
 
@@ -18,6 +19,7 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+
 .heroBlock {
     max-width: 100px;
     margin: 10px;
@@ -32,11 +34,11 @@
     cursor: pointer;
     z-index: 1;
     transform: scale(1.3);
-    img {
-    }
+
+    img {}
 }
 
-.heroBlock > .hero-name {
+.heroBlock>.hero-name {
     font-size: 16px;
 }
 
