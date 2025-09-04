@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="/components/bootstrap-4.3.1-dist/css/bootstrap.min.css">
     <!-- <script src="/components/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script> -->
     <script src="/components/js/main.js"></script>
+    <script src="/e7/js/main.js"></script>
     <link rel="stylesheet" href="/components/styles/main.css">
     <link rel="stylesheet" href="../styles/main.css">
 
@@ -19,14 +20,21 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-
-
 </head>
 
 <body onload="loadContent()">
     <nav id="navbar"></nav>
     <nav id="e7head"></nav>
     <div id="content">
+        <p>
+            Ultimate Bravery is a custom game mode in League of Legends where a player randomly 
+            generates character, summoner skills, and item build.
+        </p>
+        <p>
+            We have brought the spirit of 
+            that game mode to E7. Select all the characters that you have built on your account 
+            (including your PvE teams) and generate a random team to pvp with!
+        </p>
         <div id="team-gen">
             <p class="center">Team Size</p>
             <input class="center" type="number" value="4" id="teamCount">
@@ -68,325 +76,6 @@
         </div>
         <div class="heroBlockList unitList" id="selectList"></div>
     </div>
-    </div>
 
 </body>
-<script>
-    let heroData = [];
-    function searchBlock(location, filter = "") {
-        var input, unitBlock, unit, a, b;
-        filter = filter.toString().toUpperCase();
-        unitBlock = document.getElementById(location);
-        unit = unitBlock.getElementsByClassName("heroBlock");
-        for (let i = 0; i < unit.length; i++) {
-            a = unit[i].getAttribute("_id");
-            b = unit[i].getAttribute("name");
-            if (a.toUpperCase().indexOf(filter) > -1 || b.toUpperCase().indexOf(filter) > -1) {
-                unit[i].style.display = "";
-            } else {
-                unit[i].style.display = "none";
-            }
-        }
-    }
-    function updateUnit() {
-        let list = JSON.parse(document.getElementById("chara-list").value);
-        const location = "unitList";
-        localStorage.setItem('ultimate-bravery-list', JSON.stringify(list));
-        document.getElementById(location).innerHTML = "";
-        updateList(location, heroData, JSON.stringify(list));
-
-        let filter = document.getElementById("unitSearch").value;
-        searchBlock(location, filter);
-    }
-    function updateSelect() {
-        let list = JSON.parse(document.getElementById("chara-list").value);
-        const location = "selectList";
-        localStorage.setItem('ultimate-bravery-list', JSON.stringify(list));
-        document.getElementById(location).innerHTML = "";
-        updateList(location, JSON.parse(document.getElementById("chara-list").value), null, 1);
-
-        let filter = document.getElementById("selectSearch").value;
-        searchBlock("selectList", filter);
-    }
-    function updateManual() {
-        if (!confirm("Save changes?")) {
-            return;
-        }
-        const location = 'unitList';
-        localStorage.setItem('ultimate-bravery-list', document.getElementById('chara-list').value);
-        document.getElementById(location).innerHTML = "";
-        updateList(location, heroData, document.getElementById('chara-list').value)
-    }
-    function clearSelection() {
-        if (!confirm("Clear your selection")) {
-            return;
-        }
-        document.getElementById("chara-list").value = "[]";
-        updateSelect();
-        updateUnit();
-    }
-    function selectUnitHandler() {
-        let list = document.getElementById("chara-list").value;
-        if (list == null || list == "") {
-            list = "[]";
-        }
-        list = JSON.parse(list);
-        list.push({
-            "id": this.getAttribute("id"),
-            "_id": this.getAttribute("_id"),
-            "name": this.getAttribute("name"),
-            "count": 1,
-        })
-        this.classList.add("hidden");
-        list.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
-        document.getElementById("chara-list").value = JSON.stringify(list);
-        localStorage.setItem('ultimate-bravery-list', document.getElementById("chara-list").value);
-    }
-    function updateUnitHandler(elem) {
-        let list = document.getElementById("chara-list").value;
-        if (list == null || list == "") {
-            list = "[]";
-        }
-        list = JSON.parse(list);
-        const unitIndex = list.findIndex(e => e.id === elem.getAttribute("heroId"));
-        if (elem.value == "-" && list[unitIndex].count == 1) {
-            if (!confirm("Remove " + elem.getAttribute("name") + "?")) {
-                return;
-            }
-            elem.parentElement.classList.add("hidden");
-            list = list.reduce((acc, item) => {
-                if (item.id !== elem.getAttribute("heroId")) {
-                    acc.push(item);
-                }
-                return acc;
-            }, []);
-        }
-        else if (elem.value == "+") {
-            list[unitIndex].count++;
-        }
-        else if (elem.value == "-") {
-            list[unitIndex].count--;
-        }
-        document.getElementById(list[unitIndex].id + "SL_count").innerHTML = list[unitIndex].count;
-        list.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
-        document.getElementById("chara-list").value = JSON.stringify(list);
-        localStorage.setItem('ultimate-bravery-list', document.getElementById("chara-list").value);
-    }
-    function generateTeam() {
-        const historyIds = [];
-        if (document.getElementById("noDupes").checked) {
-            const history = JSON.parse(localStorage.getItem('e7-ultimate-bravery-history'));
-            history.forEach(team => {
-                team.forEach(unit => {
-                    historyIds.push(unit.id);
-                })
-            })
-        }
-        const location = "draftList";
-        const teamData = [];
-        let list = [];
-        let dupeOffset = 0;
-        let baseList = JSON.parse(document.getElementById("chara-list").value);
-        let teamSize = document.getElementById("teamCount").value;
-        baseList.forEach(unit => {
-            if (document.getElementById("noDupes").checked) {
-                if (historyIds.includes(unit.id)) return;
-            }
-
-            let counter = "";
-            if (unit.count > 1) {
-                dupeOffset += (unit.count - 1);
-            }
-            for (let x = 0; x < unit.count; x++) {
-                if (unit.count > 1) {
-                    counter = " " + (x + 1) + "/" + unit.count;
-                }
-                list.push({
-                    id: unit.id,
-                    name: unit.name + counter,
-                    _id: unit._id + "-" + counter
-                });
-            }
-        });
-        if ((list.length - dupeOffset) < teamSize) {
-            return alert("Not enough units selected");
-        }
-        for (let i = 0; i < teamSize; i++) {
-            const index = Math.floor(Math.random() * list.length);
-            teamData.push(list[index]);
-            list = list.reduce((acc, item) => {
-                if (item.id !== list[index].id) {
-                    acc.push(item);
-                }
-                return acc;
-            }, []);
-        }
-        document.getElementById(location).innerHTML = "";
-        updateList(location, teamData, "[]", 1);
-        updateHistory(teamData);
-    }
-    function updateList(location, data, list = null, showNames = 0) {
-        if (list == null || list == "") {
-            list = "[]";
-        }
-        list = JSON.parse(list);
-
-        let counter = 1;
-        data.forEach(unit => {
-            if (!list.some(e => e._id === unit._id)) {
-                createUnitElem(location, unit, showNames)
-            }
-        });
-    }
-    function createUnitElem(location, data, showNames = 0) {
-        const elemDiv = document.createElement('div');
-        elemDiv.setAttribute('id', data.id);
-        elemDiv.setAttribute('_id', data._id);
-        elemDiv.setAttribute('name', data.name);
-        elemDiv.classList.add("unit");
-        elemDiv.classList.add("heroBlock");
-        elemDiv.classList.add("hero-image");
-
-        const labelDiv = document.createElement('div');
-        const labelImg = document.createElement('img');
-        labelImg.classList.add("png-icon")
-        labelImg.classList.add("medium")
-        labelImg.setAttribute('src', "../assets/imgs/face/" + data.id + "_s.png");
-        labelDiv.appendChild(labelImg);
-
-        if (showNames !== 0) {
-            const labelSpan = document.createElement('span');
-            labelSpan.classList.add("hero-name");
-            labelSpan.classList.add(data.id + "-hero-name");
-            labelSpan.innerHTML = data.name;
-            labelDiv.appendChild(labelSpan);
-        }
-
-        switch (location) {
-            case "unitList":
-                elemDiv.addEventListener("click", selectUnitHandler, false);
-                break;
-            case "selectList":
-                labelDiv.appendChild(document.createElement('br'));
-
-                const labelCount = document.createElement("span");
-                labelCount.innerHTML = data.count;
-                labelCount.setAttribute("count", true);
-                labelCount.setAttribute('id', data.id + "SL_count");
-
-                const labelPlus = document.createElement("input");
-                labelPlus.classList.add("SL-btn")
-                labelPlus.setAttribute("type", "button");
-                labelPlus.setAttribute("value", "+");
-                labelPlus.setAttribute("heroId", data.id);
-                labelPlus.setAttribute('_id', data._id);
-                labelPlus.setAttribute('name', data.name);
-                labelPlus.setAttribute('onclick', "updateUnitHandler(this)");
-
-                const labelMinus = document.createElement("input");
-                labelMinus.classList.add("SL-btn")
-                labelMinus.setAttribute("type", "button");
-                labelMinus.setAttribute("value", "-");
-                labelMinus.setAttribute("heroId", data.id);
-                labelMinus.setAttribute('_id', data._id);
-                labelMinus.setAttribute('name', data.name);
-                labelMinus.setAttribute('onclick', "updateUnitHandler(this)");
-
-                labelDiv.appendChild(labelMinus);
-                labelDiv.appendChild(labelCount);
-                labelDiv.appendChild(labelPlus);
-                break;
-
-            default:
-                // console.log("No location handler set:", location);
-                break;
-        }
-
-        elemDiv.appendChild(labelDiv);
-        document.getElementById(location).appendChild(elemDiv);
-    }
-    function historyToggle() {
-        if (document.getElementById("historyList").classList.contains("hidden")) {
-            document.getElementById("historyList").classList.remove("hidden");
-        } else {
-            document.getElementById("historyList").classList.add("hidden");
-        }
-    }
-    function historyClear() {
-        localStorage.setItem('e7-ultimate-bravery-history', JSON.stringify([]));
-        updateHistory();
-        window.scrollTo(0, 0);
-    }
-    function loadContent() {
-        loadHTML("navbar", "/components/html/navbar")
-        loadHTML("e7head", "/components/html/e7head")
-        if (localStorage.getItem('ultimate-bravery-list') === null) {
-            localStorage.setItem('ultimate-bravery-list', "[]");
-        }
-        if (localStorage.getItem('e7-ultimate-bravery-history') === null) {
-            localStorage.setItem('e7-ultimate-bravery-history', "[]");
-        }
-
-        getJSON("../assets/data/cecilia-heroes.json").then(data => {
-            heroData = data;
-            document.getElementById("chara-list").value = localStorage.getItem('ultimate-bravery-list');
-            showUnit();
-            updateHistory();
-            return;
-        }).catch(error => {
-            console.log(error);
-            alert("Not able to get unit data");
-        });
-    }
-    function updateHistory(set = null) {
-        const location = "historyContent";
-        let history = JSON.parse(localStorage.getItem('e7-ultimate-bravery-history'));
-        if (set != null) {
-            let historyStorage = JSON.parse(localStorage.getItem('e7-ultimate-bravery-history'));
-            historyStorage.unshift(set);
-            if (historyStorage.length > 5) {
-                historyStorage.pop();
-            }
-            localStorage.setItem('e7-ultimate-bravery-history', JSON.stringify(historyStorage));
-            if (historyStorage.size > 1) {
-                history = historyStorage;
-            }
-        }
-        document.getElementById(location).innerHTML = "";
-        let counter = 1;
-        history.forEach(teams => {
-            const elemHead = document.createElement('h5');
-            elemHead.innerHTML = "Team " + counter;
-            document.getElementById(location).appendChild(elemHead);
-            const elemDiv = document.createElement('div');
-            const id = "history" + counter++;
-            elemDiv.setAttribute('id', id);
-            elemDiv.classList.add("heroBlockList");
-            elemDiv.classList.add("unitList");
-            document.getElementById(location).appendChild(elemDiv);
-            updateList(id, teams, "[]", 1);
-        });
-        if (history.length < 1) {
-            document.getElementById(location).innerHTML = "<h5>No history</h5>";
-        }
-    }
-    function showUnit() {
-        updateUnit();
-        document.getElementById("unitUpdate").classList.add("hidden");
-        document.getElementById("unitSelect").classList.remove("hidden");
-    }
-    function showUpdate() {
-        updateSelect();
-        document.getElementById("unitUpdate").classList.remove("hidden");
-        document.getElementById("unitSelect").classList.add("hidden");
-    }
-    function viewToggle(elem) {
-        if (document.getElementById(elem).classList.contains("hidden")) {
-            document.getElementById(elem).classList.remove("hidden");
-        } else {
-            document.getElementById(elem).classList.add("hidden");
-        }
-    }
-</script>
-
 </html>
